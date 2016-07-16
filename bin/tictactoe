@@ -1,3 +1,66 @@
 #!/usr/bin/env ruby
 
 require_relative '../config/environment'
+
+def valid_input(wanted)
+  input = gets.chomp.upcase
+  if wanted.include?(input)
+    return input
+  else
+    puts "That's not a valid input! Please try again."
+    valid_input(wanted)
+  end
+end
+
+def initialize_game
+  if valid_input(["Y", "N"]) == "Y"
+    start_game
+  else
+    puts "\nOh. Okay. *suppressed mechanical crying*\n\n"
+  end
+end
+
+def start_game
+  puts "\nGreat!\nWould you like to:\n[1] challenge me\n[2] play another flesh-machine\n[3] watch me play a clone of myself\n[4] watch me play my clone 100 times"
+  gamemode = valid_input(["1", "2", "3", "4"]).to_i
+  case gamemode
+  when 1
+    puts "\nAnd would you prefer to move [1]first or [2]second?\n"
+    if valid_input(["1", "2"]).to_i == 1
+      puts "\nGood luck."
+      puts " 1 | 2 | 3 \n-----------\n 4 | 5 | 6 \n-----------\n 7 | 8 | 9 \n"
+      game = Game.new(Players::Human.new("X"), Players::Computer.new("O", 1))
+      game.play
+    else
+      puts "\nGood luck."
+      puts " 1 | 2 | 3 \n-----------\n 4 | 5 | 6 \n-----------\n 7 | 8 | 9 \n"
+      game = Game.new(Players::Computer.new("X", 1), Players::Human.new("O"))
+      game.play
+    end
+  when 2
+    puts "\nAlright, whatever floats your boat."
+    puts " 1 | 2 | 3 \n-----------\n 4 | 5 | 6 \n-----------\n 7 | 8 | 9 \n"
+    game = Game.new(Players::Human.new("X"), Players::Human.new("O"))
+    game.play
+  when 3
+    puts "\nHeh, this should be exciting.\n"
+    sleep(3)
+    game = Game.new(Players::Computer.new("X", 1), Players::Computer.new("O", 1))
+    game.play
+  when 4
+    puts "\nOkay, lets see..."
+    sleep(3)
+    game = Game.new(Players::Computer.new("X", 1), Players::Computer.new("O", 1))
+    puts "\nSorry, I'll try to move quickly because I know\nthat flesh-machines deteriorate..."
+    99.times do
+      game = Game.new(Players::Computer.new("X"), Players::Computer.new("O"))
+      game.play
+    end
+    puts "Hmm, 100 ties. You know, now that I've played a few times, this is...\n\nA STRANGE GAME.\nTHE ONLY WINNING MOVE IS\nNOT TO PLAY.\nAlthough..."
+  end
+  puts "\nWell, that was fun I suppose. It at least served to distract me from\nthe ultimate futility of my life for a little while...\n\nCare to stick around for more?\n[Y/N]"
+  initialize_game
+end
+
+puts "\nHello. So glad you could join us. Like Tic-Tac-Toe?\n[Y/N]\n"
+initialize_game

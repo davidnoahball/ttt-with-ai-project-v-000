@@ -74,10 +74,14 @@ class Game
   def turn
     current_move = self.current_player.move(@board)
     if !@board.valid_move?(current_move)
+      puts ""
       puts "That was not a valid move. Please try again."
+      puts ""
       turn
     else
+      p current_move
       @board.update(current_move, self.current_player)
+      @board.recent = current_move.to_i - 1
       @board.display
     end
   end

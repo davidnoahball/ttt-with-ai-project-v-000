@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :cells
+  attr_accessor :cells, :recent
 
   def initialize
     @cells = Array.new(9, " ")
@@ -20,7 +20,7 @@ class Board
   end
 
   def position(input)
-    @cells[input.strip.to_i - 1]
+    @cells[input.to_i - 1]
   end
 
   def full?
